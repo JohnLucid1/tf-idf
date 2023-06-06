@@ -2,23 +2,25 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::time::SystemTime;
 
+use serde::{Deserialize, Serialize};
+
 type TermFreq = HashMap<String, f32>;
 pub type MainH = HashMap<PathBuf, TermFreq>;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Document {
     pub data: MainH,
     pub path: PathBuf,
     pub last_modified: SystemTime,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Idf {
     pub path: PathBuf,
     pub tf: f32,
 }
 
-pub fn tokenize(content: Vec<String>) -> TermFreq {
+pub fn index_data(content: Vec<String>) -> TermFreq {
     let mut data: TermFreq = HashMap::new();
     let full_length = content.len() as f32;
 
@@ -46,6 +48,14 @@ pub fn my_split(input: &str) -> Vec<String> {
     for c in input.to_lowercase().chars() {
         match c {
             '\'' => {
+                result.push(current_word.clone());
+                current_word.clear();
+            }
+            ')' => {
+                result.push(current_word.clone());
+                current_word.clear();
+            }
+            '(' => {
                 result.push(current_word.clone());
                 current_word.clear();
             }
