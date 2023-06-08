@@ -1,6 +1,5 @@
-# tf-idf
 
-# Project Name
+# TF-IDF
 The project aims to provide functionalities for indexing and searching PDF documents based on specific queries. It utilizes Rust programming language and various libraries for PDF parsing, data manipulation, and file operations.
 
 # Features
