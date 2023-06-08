@@ -73,6 +73,10 @@ fn run(mut directory: String, all_pdf_paths: Vec<PathBuf>, query: String) -> Res
     }
 }
 
+
+// the codebase exhibits a mix of imperative and procedural programming style.
+// The code follows a step-by-step approach, performing operations sequentially and mutating state along the way.
+// It makes use of loops, conditional statements, and mutable variables to control the flow and manipulate data
 fn main() {
     let args: Vec<String> = std::env::args().collect();
 
