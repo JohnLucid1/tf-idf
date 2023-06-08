@@ -1,7 +1,6 @@
 use super::lexing::Document;
 use poppler::PopplerDocument;
-use serde_json::Result;
-use std::fs;
+use std::{fs, io};
 use std::{fs::read_dir, path::PathBuf};
 
 /// Searches for files with a specific filetype in a directory.
@@ -53,7 +52,6 @@ pub fn search_filetype(path: &String, filetype: &str) -> std::io::Result<Vec<Pat
 
     Ok(files_vec)
 }
-
 
 /// This function takes a `PathBuf` argument representing the path to a PDF document and returns a `String`
 /// containing the concatenated text content of all pages in the PDF document.
@@ -108,7 +106,7 @@ pub fn read_from_pdf(doc: &PathBuf) -> String {
 ///
 /// # Returns
 ///
-/// An `Result` indicating the success or failure of the serialization and saving operation.
+/// An `io::Result` indicating the success or failure of the serialization and saving operation.
 ///
 /// # Errors
 ///
@@ -120,10 +118,10 @@ pub fn read_from_pdf(doc: &PathBuf) -> String {
 /// ```
 /// use std::path::Path;
 ///
-/// let data: Vec<Document> = vec![/* ... */];
+/// let data: &Vec<Document> = &vec![/* ... */];
 /// let path = String::from("path/to/save.json");
 ///
-/// match serialize_and_save(&data, path) {
+/// match serialize_and_save(data, path) {
 ///     Ok(()) => {
 ///         println!("Data serialized and saved successfully.");
 ///     },
@@ -132,8 +130,7 @@ pub fn read_from_pdf(doc: &PathBuf) -> String {
 ///     }
 /// }
 /// ```
-
 pub fn serialize_and_save(data: &Vec<Document>, path: String) -> io::Result<()> {
     let serialized_data = serde_json::to_string_pretty(&data)?;
-    fs::write(path, serialized_data)?;
+    fs::write(&path, serialized_data)
 }
